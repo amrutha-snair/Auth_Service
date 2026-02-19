@@ -42,23 +42,7 @@ It is a Single Page Authentication UI built with pure HTML, CSS, and JavaScript 
 
 ## 📂 Project Structure
 
-Auth-service/
-│
-├── frontend/
-│ ├── index.html # UI Pages (Login, Signup, Dashboard, Reset)
-│ ├── styles.css # Complete UI Styling
-│ └── app.js # Frontend Authentication Logic
-│
-├── backend/
-│ ├── controllers/
-│ │ └── auth_controller.js # Core Auth Logic
-│ ├── models/
-│ │ └── User.js # User Schema
-│ ├── routes/
-│ │ └── auth_routes.js
-│ └── server.js
-│
-└── README.md
+<img width="480" height="479" alt="Screenshot from 2026-02-19 21-52-16" src="https://github.com/user-attachments/assets/66bb3049-7b64-4bd1-803c-db2e5d536112" />
 
 
 ---
