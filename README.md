@@ -1,166 +1,147 @@
-🔐 Auth-service
+# 🔐 Auth-service
 
-A secure full-stack authentication service built with Node.js, Express, MongoDB, and Vanilla JavaScript.
-This project implements production-style authentication architecture including JWT access tokens, refresh tokens, email verification, password reset, and token rotation.
+A secure full-stack authentication service built using **Node.js, Express, MongoDB, and Vanilla JavaScript**.  
+This project implements a production-style authentication system including JWT access tokens, refresh tokens, email verification, password reset, and token rotation.
 
-Auth-service is designed to demonstrate real-world backend security practices instead of basic login-only authentication.
+It is a Single Page Authentication UI built with pure HTML, CSS, and JavaScript (no frameworks like React).
 
-🚀 Features
+---
 
-User Signup with Email Verification (Dev Mode)
+## 🚀 Features
 
-Secure Login with JWT Access Tokens
+- User Signup with Email Verification (Dev Mode)
+- Secure Login using JWT Access Tokens
+- HTTP-Only Refresh Token Cookies
+- Refresh Token Rotation (Session Security)
+- Forgot Password & Reset Password Flow
+- Protected Dashboard Session
+- Token Expiry Display
+- Toast Notification System
+- Responsive Minimal UI (Vanilla CSS)
 
-HTTP-Only Refresh Token Cookies
+---
 
-Refresh Token Rotation (Advanced Session Security)
+## 🧠 Tech Stack
 
-Forgot Password & Reset Password Flow
+### Frontend
+- HTML5
+- CSS3 (Custom UI + Responsive Design)
+- Vanilla JavaScript (No React, No Frameworks)
+- Fetch API
 
-Token Expiry Tracking (Dashboard)
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- JSON Web Tokens (JWT)
+- bcrypt (Password Hashing)
+- crypto (Secure Token Generation)
+- Cookie-based Authentication
 
-Protected Session Handling
+---
 
-Toast Notifications & Multi-Page UI
+## 📂 Project Structure
 
-Secure Password Hashing using bcrypt
-
-🧠 Tech Stack
-Frontend
-
-HTML
-
-CSS
-
-Vanilla JavaScript (Fetch API)
-
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB (Mongoose)
-
-JWT (jsonwebtoken)
-
-bcrypt (Password Hashing)
-
-crypto (Secure Token Generation)
-
-Cookie-based Authentication
-
-📂 Project Structure
 Auth-service/
 │
 ├── frontend/
-│   ├── app.js              # Frontend authentication logic
-│   ├── index.html          # UI pages (Login, Signup, Dashboard)
-│   └── styles.css
+│ ├── index.html # UI Pages (Login, Signup, Dashboard, Reset)
+│ ├── styles.css # Complete UI Styling
+│ └── app.js # Frontend Authentication Logic
 │
 ├── backend/
-│   ├── controllers/
-│   │   └── auth_controller.js   # Core authentication logic
-│   ├── models/
-│   │   └── User.js
-│   ├── routes/
-│   │   └── auth_routes.js
-│   └── server.js
+│ ├── controllers/
+│ │ └── auth_controller.js # Core Auth Logic
+│ ├── models/
+│ │ └── User.js # User Schema
+│ ├── routes/
+│ │ └── auth_routes.js
+│ └── server.js
 │
 └── README.md
 
-🔐 Authentication Architecture
 
-This project uses a modern dual-token authentication system:
+---
 
-Access Token (JWT) → Short-lived (15 minutes)
+## 🔐 Authentication Architecture
 
-Refresh Token → Long-lived (7 days, HTTP-only cookie)
+This project follows a modern dual-token authentication strategy:
 
-Why this architecture?
+- **Access Token (JWT)** → Short-lived (e.g., 15 minutes)
+- **Refresh Token** → Long-lived (stored in HTTP-only cookies)
 
-Because storing long-lived tokens in the browser is risky.
-So access tokens stay in memory, and refresh tokens stay in secure cookies.
+Access tokens are stored in memory (not localStorage) to reduce XSS risks, while refresh tokens are securely stored in cookies and rotated for enhanced security.
 
-Less exposure = better security.
+---
 
-🔄 Complete Authentication Flow
-1️⃣ Signup
+## 🔄 Complete Authentication Flow
 
-User registers with email, name, and password
+### 1. Signup
+- User registers with name, email, and password
+- Password is hashed using bcrypt
+- Email verification token is generated using crypto
+- In development mode, token is returned in API response
 
-Password is hashed using bcrypt
+### 2. Email Verification
+- User verifies account using verification token
+- Login is blocked until email is verified
 
-Email verification token is generated using crypto
+### 3. Login
+- Credentials are validated against database
+- Access Token is returned (JWT)
+- Refresh Token is stored in HTTP-only cookie
+- User enters authenticated dashboard
 
-In development, token is returned instead of sending an email
+### 4. Token Refresh
+- When access token expires, `/refresh` endpoint issues a new one
+- Refresh token is rotated and re-stored in cookie
+- Prevents replay attacks and session hijacking
 
-2️⃣ Email Verification
+### 5. Logout
+- Refresh token is removed from database
+- Cookie is cleared
+- Session is fully terminated
 
-User verifies account using verification token
+### 6. Password Reset
+- Secure reset token generated (1-hour expiry)
+- New password is hashed before saving
+- All existing sessions are invalidated after reset
 
-Account cannot log in until verified
+---
 
-3️⃣ Login
+## 🛡️ Security Features
 
-Credentials are validated
+- bcrypt Password Hashing with Salt Rounds
+- HTTP-Only Cookies (Prevents XSS Token Theft)
+- SameSite=Strict Cookie Policy (CSRF Protection)
+- Refresh Token Rotation
+- Database Stored Refresh Tokens (Revocable Sessions)
+- Email Verification Enforcement
+- Password Reset Token Expiry
+- Session Invalidation on Password Reset
+- User Enumeration Prevention (secure reset responses)
 
-Access Token (JWT) is returned
+---
 
-Refresh Token is stored in HTTP-only cookie
+## 📡 API Endpoints
 
-Session becomes authenticated
+Base Route: `/api/auth`
 
-4️⃣ Token Refresh (Session Continuity)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /signup | Register a new user |
+| GET | /verify-email | Verify email token |
+| POST | /login | User login |
+| POST | /refresh | Refresh access token |
+| POST | /logout | Logout user |
+| POST | /request-password-reset | Request reset token |
+| POST | /reset-password | Reset user password |
 
-When access token expires, /refresh endpoint is called
+---
 
-Backend verifies refresh token from cookie
+## ⚙️ Environment Variables
 
-Issues new access token
-
-Rotates refresh token for security
-
-5️⃣ Logout
-
-Refresh token is removed from database
-
-Cookie is cleared
-
-Session is fully terminated
-
-6️⃣ Forgot & Reset Password
-
-Secure reset token generated (1-hour expiry)
-
-New password is hashed before storing
-
-All existing sessions are invalidated after reset
-
-🛡️ Security Features Implemented
-
-bcrypt Password Hashing (with salt rounds)
-
-HTTP-Only Cookies (Prevents XSS attacks)
-
-SameSite=Strict Cookie Policy (CSRF protection)
-
-Refresh Token Rotation
-
-Database Stored Refresh Tokens (Revocable sessions)
-
-Email Verification Enforcement
-
-Password Reset Token Expiry
-
-Session Invalidation on Password Reset
-
-User Enumeration Prevention (secure reset responses)
-
-
-⚙️ Environment Variables
-
-Create a .env file in the backend folder:
+Create a `.env` file in the backend directory:
 
 PORT=5000
 MONGO_URI=your_mongodb_uri
@@ -173,77 +154,80 @@ REFRESH_TOKEN_EXPIRY=7d
 
 NODE_ENV=development
 
-📡 API Endpoints
 
-Base Route: /api/auth
+---
 
-Method	Endpoint	Description
-POST	/signup	Register a new user
-GET	/verify-email	Verify email token
-POST	/login	User login
-POST	/refresh	Refresh access token
-POST	/logout	Logout user
-POST	/request-password-reset	Request password reset
-POST	/reset-password	Reset user password
-🖥️ Running the Project Locally
-1. Clone the Repository
+## 🖥️ Running the Project Locally
+
+### 1. Clone the Repository
 git clone https://github.com/your-username/Auth-service.git
 cd Auth-service
 
-2. Install Backend Dependencies
+
+### 2. Install Backend Dependencies
 cd backend
 npm install
 
-3. Setup Environment Variables
 
-Create a .env file and add your MongoDB URI and JWT secrets.
+### 3. Setup Environment Variables
+Create a `.env` file and add your MongoDB URI and JWT secrets.
 
-4. Start the Backend Server
+
+### 4. Start the Backend Server
 npm run dev
 
 
-5. Run the Frontend
-
-Open the frontend index.html in a browser
+### 5. Run the Frontend
+Open `index.html` in your browser  
 (or use Live Server / any local server)
 
-🧪 Development Notes
+---
 
-Email sending is mocked (verification token returned in response)
+## 🎨 UI Pages Included
 
-Password reset token is exposed only in development
+- Login Page
+- Signup Page
+- Email Verification Page (Dev Mode)
+- Forgot Password Page
+- Reset Password Page
+- Authenticated Dashboard
 
-Access token is stored in memory (not localStorage) for better security
+---
 
-Refresh token is stored in HTTP-only cookie for protection against XSS
+## 🧪 Development Notes
 
-📊 Token Lifecycle Overview
-User Login
-   ↓
-Access Token (Short-lived)
-   +
-Refresh Token (HTTP-only cookie)
+- Email sending is mocked (verification token returned in response)
+- Password reset token is exposed only in development mode
+- Access token is stored in memory instead of localStorage for better security
+- Refresh token is stored in HTTP-only cookies
+
+---
+
+## 📊 Token Lifecycle Overview
+
+Login → Access Token (Short-lived)
++ Refresh Token (HTTP-only cookie)
 
 Access Token Expires
-   ↓
-/refresh endpoint
-   ↓
+↓
+/refresh API
+↓
 New Access Token + Rotated Refresh Token
 
-📈 Future Enhancements (Production Ready)
 
-Email Service Integration (Nodemailer / SendGrid)
+---
 
-Rate Limiting & Brute Force Protection
+## 📈 Future Improvements
 
-OAuth (Google / GitHub Login)
+- Email Service Integration (Nodemailer / SendGrid)
+- Rate Limiting & Brute Force Protection
+- OAuth (Google / GitHub Login)
+- Redis for Session Storage
+- CSRF Token Protection
+- Refresh Token Hashing in Database
 
-Redis for Session Management
+---
 
-Refresh Token Hashing in Database
+## 👨‍💻 Author
 
-CSRF Token Protection
-
-👨‍💻 Purpose of the Project
-
-Auth-service was built to demonstrate a production-style authentication system with secure session management, token rotation, and advanced backend security practices suitable for real-world applications and backend-focused roles.
+Built as a secure authentication service to demonstrate real-world backend authentication architecture, token management, and session security using a minimal Vanilla JS frontend and Node.js backend.
