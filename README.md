@@ -144,7 +144,7 @@ NODE_ENV=development
 ## 🖥️ Running the Project Locally
 
 ### 1. Clone the Repository
-git clone https://github.com/your-username/Auth-service.git
+git clone https://github.com/amrutha-snair/Auth_Service.git
 cd Auth-service
 
 
