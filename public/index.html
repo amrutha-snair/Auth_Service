@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Auth Service – Secure authentication portal" />
+  <title>Auth Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- ─── Login ────────────────────────────────── -->
+  <section id="page-login" class="page active">
+    <div class="card">
+      <div class="logo">🔐</div>
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Sign in to your account</p>
+      <form id="form-login" autocomplete="on">
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-primary" id="btn-login">Sign In</button>
+      </form>
+      <div class="card-footer">
+        <a href="#" id="link-forgot">Forgot password?</a>
+        <span class="divider">·</span>
+        <a href="#" id="link-to-signup">Create account</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Signup ───────────────────────────────── -->
+  <section id="page-signup" class="page">
+    <div class="card">
+      <div class="logo">✨</div>
+      <h1>Create Account</h1>
+      <p class="subtitle">Get started for free</p>
+      <form id="form-signup" autocomplete="on">
+        <div class="input-group">
+          <label for="signup-name">Name</label>
+          <input id="signup-name" type="text" placeholder="John Doe" autocomplete="name" />
+        </div>
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <input id="signup-email" type="email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="input-group">
+          <label for="signup-password">Password</label>
+          <input id="signup-password" type="password" placeholder="Min 8 characters" required minlength="8" autocomplete="new-password" />
+        </div>
+        <button type="submit" class="btn-primary" id="btn-signup">Create Account</button>
+      </form>
+      <div class="card-footer">
+        <span>Already have an account?</span>
+        <a href="#" id="link-to-login-from-signup">Sign in</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Verify Email Notice ──────────────────── -->
+  <section id="page-verify" class="page">
+    <div class="card card-narrow">
+      <div class="logo">📧</div>
+      <h1>Verify Your Email</h1>
+      <p class="subtitle" id="verify-msg">We sent a verification link. Check your inbox.</p>
+      <button class="btn-primary" id="btn-verify-now">Verify Now (Dev)</button>
+      <div class="card-footer">
+        <a href="#" id="link-to-login-from-verify">Back to sign in</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Forgot Password ─────────────────────── -->
+  <section id="page-forgot" class="page">
+    <div class="card card-narrow">
+      <div class="logo">🔑</div>
+      <h1>Reset Password</h1>
+      <p class="subtitle">Enter your email to receive a reset link</p>
+      <form id="form-forgot">
+        <div class="input-group">
+          <label for="forgot-email">Email</label>
+          <input id="forgot-email" type="email" placeholder="you@example.com" required />
+        </div>
+        <button type="submit" class="btn-primary" id="btn-forgot">Send Reset Link</button>
+      </form>
+      <div class="card-footer">
+        <a href="#" id="link-to-login-from-forgot">Back to sign in</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Reset Password ──────────────────────── -->
+  <section id="page-reset" class="page">
+    <div class="card card-narrow">
+      <div class="logo">🔄</div>
+      <h1>New Password</h1>
+      <p class="subtitle">Choose a strong new password</p>
+      <form id="form-reset">
+        <div class="input-group">
+          <label for="reset-password">New Password</label>
+          <input id="reset-password" type="password" placeholder="Min 8 characters" required minlength="8" />
+        </div>
+        <div class="input-group">
+          <label for="reset-confirm">Confirm Password</label>
+          <input id="reset-confirm" type="password" placeholder="Repeat password" required minlength="8" />
+        </div>
+        <button type="submit" class="btn-primary" id="btn-reset">Update Password</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── Dashboard ────────────────────────────── -->
+  <section id="page-dashboard" class="page">
+    <nav class="topbar">
+      <span class="topbar-title">🔐 Auth Service</span>
+      <button class="btn-ghost" id="btn-logout">Logout</button>
+    </nav>
+    <div class="dashboard-content">
+      <div class="card card-wide">
+        <h1>Dashboard</h1>
+        <p class="subtitle">You're authenticated! 🎉</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="dash-status">Authenticated</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Session</span>
+            <span class="stat-value" id="dash-session">Active</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Token Expires</span>
+            <span class="stat-value" id="dash-expiry">—</span>
+          </div>
+        </div>
+        <button class="btn-secondary" id="btn-refresh-token">Refresh Token</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
